@@ -58,10 +58,10 @@ public class MenuInicial extends javax.swing.JFrame {
         InventoryLabel = new javax.swing.JLabel();
         InventoryIcon = new javax.swing.JLabel();
         Tabs = new javax.swing.JTabbedPane();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
+        ChargeTab = new javax.swing.JPanel();
+        AdministrationTab = new javax.swing.JPanel();
+        InventoryTab = new javax.swing.JPanel();
+        SettingsTab = new javax.swing.JPanel();
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
@@ -312,65 +312,65 @@ public class MenuInicial extends javax.swing.JFrame {
 
         getContentPane().add(PinkPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 0, 290, 730));
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        ChargeTab.setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout ChargeTabLayout = new javax.swing.GroupLayout(ChargeTab);
+        ChargeTab.setLayout(ChargeTabLayout);
+        ChargeTabLayout.setHorizontalGroup(
+            ChargeTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 905, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        ChargeTabLayout.setVerticalGroup(
+            ChargeTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 590, Short.MAX_VALUE)
         );
 
-        Tabs.addTab("Cobrar", jPanel2);
+        Tabs.addTab("Cobrar", ChargeTab);
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        AdministrationTab.setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout AdministrationTabLayout = new javax.swing.GroupLayout(AdministrationTab);
+        AdministrationTab.setLayout(AdministrationTabLayout);
+        AdministrationTabLayout.setHorizontalGroup(
+            AdministrationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 905, Short.MAX_VALUE)
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        AdministrationTabLayout.setVerticalGroup(
+            AdministrationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 590, Short.MAX_VALUE)
         );
 
-        Tabs.addTab("Administrar", jPanel3);
+        Tabs.addTab("Administrar", AdministrationTab);
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        InventoryTab.setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout InventoryTabLayout = new javax.swing.GroupLayout(InventoryTab);
+        InventoryTab.setLayout(InventoryTabLayout);
+        InventoryTabLayout.setHorizontalGroup(
+            InventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 905, Short.MAX_VALUE)
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        InventoryTabLayout.setVerticalGroup(
+            InventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 590, Short.MAX_VALUE)
         );
 
-        Tabs.addTab("Inventario", jPanel4);
+        Tabs.addTab("Inventario", InventoryTab);
 
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        SettingsTab.setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout SettingsTabLayout = new javax.swing.GroupLayout(SettingsTab);
+        SettingsTab.setLayout(SettingsTabLayout);
+        SettingsTabLayout.setHorizontalGroup(
+            SettingsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 905, Short.MAX_VALUE)
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        SettingsTabLayout.setVerticalGroup(
+            SettingsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 590, Short.MAX_VALUE)
         );
 
-        Tabs.addTab("Configuraciones", jPanel5);
+        Tabs.addTab("Configuraciones", SettingsTab);
 
         getContentPane().add(Tabs, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 910, 620));
 
@@ -476,14 +476,17 @@ public class MenuInicial extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AdministrationLabel;
     private javax.swing.JPanel AdministrationPanel;
+    private javax.swing.JPanel AdministrationTab;
     private javax.swing.JLabel ChargeLabel;
     private javax.swing.JPanel ChargePanel;
+    private javax.swing.JPanel ChargeTab;
     private javax.swing.JLabel ConfigurationIcon;
     private javax.swing.JLabel ConfigurationLabel;
     private javax.swing.JPanel ConfigurationPanel;
     private javax.swing.JLabel InventoryIcon;
     private javax.swing.JLabel InventoryLabel;
     private javax.swing.JPanel InventoryPanel;
+    private javax.swing.JPanel InventoryTab;
     private javax.swing.JLabel JobLabel;
     private javax.swing.JLabel LogoutIcon;
     private javax.swing.JLabel LogoutLabel;
@@ -492,6 +495,7 @@ public class MenuInicial extends javax.swing.JFrame {
     private javax.swing.JLabel MoneyIcon;
     private javax.swing.JPanel PinkPanel;
     private javax.swing.JLabel ProfileLabel;
+    private javax.swing.JPanel SettingsTab;
     private javax.swing.JTabbedPane Tabs;
     private javax.swing.JLabel TitleLabel;
     private javax.swing.JLabel TitleLogoLabel;
@@ -499,10 +503,6 @@ public class MenuInicial extends javax.swing.JFrame {
     private javax.swing.JLabel UserLogoLabel;
     private javax.swing.JLabel UsernameLabel;
     private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     // End of variables declaration//GEN-END:variables
     
     public void configuraMenuDatos(int posicionUsuario){
@@ -524,5 +524,7 @@ public class MenuInicial extends javax.swing.JFrame {
             JobLabel.setText("Empleado");
         JobLabel.setHorizontalAlignment(0);
     }
+    //Aquí van métodos de sus respectivas pestañas
+    
 }
 
