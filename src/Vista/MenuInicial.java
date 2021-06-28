@@ -421,18 +421,23 @@ public class MenuInicial extends javax.swing.JFrame {
         labelUnidadMedida.setText("Unidad de Medida:");
         panelFondoFormulario.add(labelUnidadMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, -1, -1));
 
+        txtCantidadDisponible.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCantidadDisponible.setBorder(null);
         panelFondoFormulario.add(txtCantidadDisponible, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 180, 190, 30));
 
+        txtCodigoProducto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCodigoProducto.setBorder(null);
         panelFondoFormulario.add(txtCodigoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, 190, 30));
 
+        txtNombreProducto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtNombreProducto.setBorder(null);
         panelFondoFormulario.add(txtNombreProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 30, 190, 30));
 
+        txtPrecioVenta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtPrecioVenta.setBorder(null);
         panelFondoFormulario.add(txtPrecioVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 40, 70, 30));
 
+        txtPrecioCompra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtPrecioCompra.setBorder(null);
         panelFondoFormulario.add(txtPrecioCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 90, 70, 30));
 
