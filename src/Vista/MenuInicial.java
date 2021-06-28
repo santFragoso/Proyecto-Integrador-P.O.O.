@@ -6,9 +6,17 @@
 package Vista;
 
 import static Aplicacion.PruebaInterfazTienda.cargaArregloUsuarios;
+import Modelo.InventarioException;
+import Modelo.Producto;
 import Modelo.Usuarios.*;
 import java.awt.Color;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,6 +27,8 @@ public class MenuInicial extends javax.swing.JFrame {
     /**
      * Creates new form MenuInicial
      */
+    ArrayList<Producto> listaProductos = new ArrayList<>();
+
     public MenuInicial() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -61,6 +71,27 @@ public class MenuInicial extends javax.swing.JFrame {
         ChargeTab = new javax.swing.JPanel();
         AdministrationTab = new javax.swing.JPanel();
         InventoryTab = new javax.swing.JPanel();
+        panelFondoFormulario = new javax.swing.JPanel();
+        labelCodigoProducto = new javax.swing.JLabel();
+        labelNombre = new javax.swing.JLabel();
+        labelPrecioVenta = new javax.swing.JLabel();
+        labelPrecioCompra = new javax.swing.JLabel();
+        labelCantidadDisponible = new javax.swing.JLabel();
+        labelUnidadMedida = new javax.swing.JLabel();
+        txtCantidadDisponible = new javax.swing.JTextField();
+        txtCodigoProducto = new javax.swing.JTextField();
+        txtNombreProducto = new javax.swing.JTextField();
+        txtPrecioVenta = new javax.swing.JTextField();
+        txtPrecioCompra = new javax.swing.JTextField();
+        jPanelbtnAgregar = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanelbtnEliminar = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jPanelbtnEditar = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        CBMedida = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblProductos = new javax.swing.JTable();
         SettingsTab = new javax.swing.JPanel();
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
@@ -76,6 +107,11 @@ public class MenuInicial extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         TitleLabel.setFont(new java.awt.Font("Microsoft Yi Baiti", 2, 48)); // NOI18N
@@ -343,17 +379,163 @@ public class MenuInicial extends javax.swing.JFrame {
         Tabs.addTab("Administrar", AdministrationTab);
 
         InventoryTab.setBackground(new java.awt.Color(255, 255, 255));
+        InventoryTab.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout InventoryTabLayout = new javax.swing.GroupLayout(InventoryTab);
-        InventoryTab.setLayout(InventoryTabLayout);
-        InventoryTabLayout.setHorizontalGroup(
-            InventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 905, Short.MAX_VALUE)
-        );
-        InventoryTabLayout.setVerticalGroup(
-            InventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 590, Short.MAX_VALUE)
-        );
+        panelFondoFormulario.setBackground(new java.awt.Color(255, 173, 173));
+        panelFondoFormulario.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        labelCodigoProducto.setBackground(new java.awt.Color(255, 255, 255));
+        labelCodigoProducto.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        labelCodigoProducto.setForeground(new java.awt.Color(88, 73, 54));
+        labelCodigoProducto.setText("Código del producto:");
+        labelCodigoProducto.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        panelFondoFormulario.add(labelCodigoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, -1, -1));
+
+        labelNombre.setBackground(new java.awt.Color(255, 255, 255));
+        labelNombre.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        labelNombre.setForeground(new java.awt.Color(88, 73, 54));
+        labelNombre.setText("Nombre del producto:");
+        panelFondoFormulario.add(labelNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, -1, -1));
+
+        labelPrecioVenta.setBackground(new java.awt.Color(255, 255, 255));
+        labelPrecioVenta.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        labelPrecioVenta.setForeground(new java.awt.Color(88, 73, 54));
+        labelPrecioVenta.setText("Precio Venta:");
+        panelFondoFormulario.add(labelPrecioVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 40, 110, -1));
+
+        labelPrecioCompra.setBackground(new java.awt.Color(255, 255, 255));
+        labelPrecioCompra.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        labelPrecioCompra.setForeground(new java.awt.Color(88, 73, 54));
+        labelPrecioCompra.setText("Precio Compra:");
+        panelFondoFormulario.add(labelPrecioCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 90, 130, -1));
+
+        labelCantidadDisponible.setBackground(new java.awt.Color(255, 255, 255));
+        labelCantidadDisponible.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        labelCantidadDisponible.setForeground(new java.awt.Color(88, 73, 54));
+        labelCantidadDisponible.setText("Cantidad Disponible:");
+        panelFondoFormulario.add(labelCantidadDisponible, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, -1, -1));
+
+        labelUnidadMedida.setBackground(new java.awt.Color(255, 255, 255));
+        labelUnidadMedida.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        labelUnidadMedida.setForeground(new java.awt.Color(88, 73, 54));
+        labelUnidadMedida.setText("Unidad de Medida:");
+        panelFondoFormulario.add(labelUnidadMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, -1, -1));
+
+        txtCantidadDisponible.setBorder(null);
+        panelFondoFormulario.add(txtCantidadDisponible, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 180, 190, 30));
+
+        txtCodigoProducto.setBorder(null);
+        panelFondoFormulario.add(txtCodigoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, 190, 30));
+
+        txtNombreProducto.setBorder(null);
+        panelFondoFormulario.add(txtNombreProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 30, 190, 30));
+
+        txtPrecioVenta.setBorder(null);
+        panelFondoFormulario.add(txtPrecioVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 40, 70, 30));
+
+        txtPrecioCompra.setBorder(null);
+        panelFondoFormulario.add(txtPrecioCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 90, 70, 30));
+
+        jPanelbtnAgregar.setBackground(new java.awt.Color(226, 109, 92));
+        jPanelbtnAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanelbtnAgregar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jPanelbtnAgregarMouseMoved(evt);
+            }
+        });
+        jPanelbtnAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanelbtnAgregarMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jPanelbtnAgregarMouseExited(evt);
+            }
+        });
+        jPanelbtnAgregar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Agregar");
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel2.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanelbtnAgregar.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, -1, 40));
+
+        panelFondoFormulario.add(jPanelbtnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 190, 90, -1));
+
+        jPanelbtnEliminar.setBackground(new java.awt.Color(226, 109, 92));
+        jPanelbtnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanelbtnEliminar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jPanelbtnEliminarMouseMoved(evt);
+            }
+        });
+        jPanelbtnEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanelbtnEliminarMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jPanelbtnEliminarMouseExited(evt);
+            }
+        });
+        jPanelbtnEliminar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Eliminar");
+        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel3.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanelbtnEliminar.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, -1, 40));
+
+        panelFondoFormulario.add(jPanelbtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 190, 90, -1));
+
+        jPanelbtnEditar.setBackground(new java.awt.Color(226, 109, 92));
+        jPanelbtnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanelbtnEditar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jPanelbtnEditarMouseMoved(evt);
+            }
+        });
+        jPanelbtnEditar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanelbtnEditarMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jPanelbtnEditarMouseExited(evt);
+            }
+        });
+        jPanelbtnEditar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Editar");
+        jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel4.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanelbtnEditar.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, -1, 40));
+
+        panelFondoFormulario.add(jPanelbtnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 190, 90, -1));
+
+        CBMedida.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Seleccionar-", "Pieza", "Litros", "Gramos" }));
+        panelFondoFormulario.add(CBMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, 190, 30));
+
+        InventoryTab.add(panelFondoFormulario, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 910, 290));
+
+        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblProductos);
+
+        InventoryTab.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 6, 900, 284));
 
         Tabs.addTab("Inventario", InventoryTab);
 
@@ -378,43 +560,43 @@ public class MenuInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ChargePanelMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ChargePanelMouseMoved
-        ChargePanel.setBackground(new Color(153,0,0));
+        ChargePanel.setBackground(new Color(153, 0, 0));
     }//GEN-LAST:event_ChargePanelMouseMoved
 
     private void ChargePanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ChargePanelMouseExited
-        ChargePanel.setBackground(new Color(189,47,47));
+        ChargePanel.setBackground(new Color(189, 47, 47));
     }//GEN-LAST:event_ChargePanelMouseExited
 
     private void AdministrationPanelMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AdministrationPanelMouseMoved
-        AdministrationPanel.setBackground(new Color(153,0,0));
+        AdministrationPanel.setBackground(new Color(153, 0, 0));
     }//GEN-LAST:event_AdministrationPanelMouseMoved
 
     private void AdministrationPanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AdministrationPanelMouseExited
-        AdministrationPanel.setBackground(new Color(236,75,75));
+        AdministrationPanel.setBackground(new Color(236, 75, 75));
     }//GEN-LAST:event_AdministrationPanelMouseExited
 
     private void InventoryPanelMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InventoryPanelMouseMoved
-        InventoryPanel.setBackground(new Color(153,0,0));
+        InventoryPanel.setBackground(new Color(153, 0, 0));
     }//GEN-LAST:event_InventoryPanelMouseMoved
 
     private void InventoryPanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InventoryPanelMouseExited
-        InventoryPanel.setBackground(new Color(255,81,81));
+        InventoryPanel.setBackground(new Color(255, 81, 81));
     }//GEN-LAST:event_InventoryPanelMouseExited
 
     private void ConfigurationPanelMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ConfigurationPanelMouseMoved
-        ConfigurationPanel.setBackground(new Color(153,0,0));
+        ConfigurationPanel.setBackground(new Color(153, 0, 0));
     }//GEN-LAST:event_ConfigurationPanelMouseMoved
 
     private void ConfigurationPanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ConfigurationPanelMouseExited
-        ConfigurationPanel.setBackground(new Color(255,142,142));
+        ConfigurationPanel.setBackground(new Color(255, 142, 142));
     }//GEN-LAST:event_ConfigurationPanelMouseExited
 
     private void LogoutPanelMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogoutPanelMouseMoved
-        LogoutPanel.setBackground(new Color(153,0,0));
+        LogoutPanel.setBackground(new Color(153, 0, 0));
     }//GEN-LAST:event_LogoutPanelMouseMoved
 
     private void LogoutPanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogoutPanelMouseExited
-        LogoutPanel.setBackground(new Color(255,81,81));
+        LogoutPanel.setBackground(new Color(255, 81, 81));
     }//GEN-LAST:event_LogoutPanelMouseExited
 
     private void LogoutPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogoutPanelMouseClicked
@@ -437,6 +619,72 @@ public class MenuInicial extends javax.swing.JFrame {
     private void ConfigurationPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ConfigurationPanelMouseClicked
         Tabs.setSelectedIndex(3);
     }//GEN-LAST:event_ConfigurationPanelMouseClicked
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        listaProductos = leer();
+        mostrar();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jPanelbtnAgregarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelbtnAgregarMouseMoved
+        // TODO add your handling code here:
+        jPanelbtnAgregar.setBackground(new Color(255, 205, 204));
+    }//GEN-LAST:event_jPanelbtnAgregarMouseMoved
+
+    private void jPanelbtnAgregarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelbtnAgregarMouseExited
+        // TODO add your handling code here:
+        jPanelbtnAgregar.setBackground(new Color(226, 109, 92));
+    }//GEN-LAST:event_jPanelbtnAgregarMouseExited
+
+    private void jPanelbtnAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelbtnAgregarMouseClicked
+        // TODO add your handling code here:
+        try {
+            llenarTabla();
+
+        } catch (NumberFormatException error) {
+            JOptionPane.showMessageDialog(null, "Los precios y la cantidad disponible deben ser enteros");
+        }
+
+    }//GEN-LAST:event_jPanelbtnAgregarMouseClicked
+
+    private void jPanelbtnEliminarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelbtnEliminarMouseMoved
+        // TODO add your handling code here:
+        jPanelbtnEliminar.setBackground(new Color(255, 205, 204));
+    }//GEN-LAST:event_jPanelbtnEliminarMouseMoved
+
+    private void jPanelbtnEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelbtnEliminarMouseClicked
+        // TODO add your handling code here:
+        int filaSelec = tblProductos.getSelectedRow();
+        try {
+            if (filaSelec < 0) {
+                throw new InventarioException("Debes seleccionar un elemento a eliminar");
+            }
+            eliminar(filaSelec);
+        } catch (InventarioException error) {
+            JOptionPane.showMessageDialog(null, error.getMessage());
+        }
+
+    }//GEN-LAST:event_jPanelbtnEliminarMouseClicked
+
+    private void jPanelbtnEliminarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelbtnEliminarMouseExited
+        // TODO add your handling code here:
+        jPanelbtnEliminar.setBackground(new Color(226, 109, 92));
+    }//GEN-LAST:event_jPanelbtnEliminarMouseExited
+
+    private void jPanelbtnEditarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelbtnEditarMouseMoved
+        // TODO add your handling code here:
+        jPanelbtnEditar.setBackground(new Color(255, 205, 204));
+    }//GEN-LAST:event_jPanelbtnEditarMouseMoved
+
+    private void jPanelbtnEditarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelbtnEditarMouseClicked
+        // TODO add your handling code here:
+        editar();
+    }//GEN-LAST:event_jPanelbtnEditarMouseClicked
+
+    private void jPanelbtnEditarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelbtnEditarMouseExited
+        // TODO add your handling code here:
+        jPanelbtnEditar.setBackground(new Color(226, 109, 92));
+    }//GEN-LAST:event_jPanelbtnEditarMouseExited
 
     /**
      * @param args the command line arguments
@@ -477,6 +725,7 @@ public class MenuInicial extends javax.swing.JFrame {
     private javax.swing.JLabel AdministrationLabel;
     private javax.swing.JPanel AdministrationPanel;
     private javax.swing.JPanel AdministrationTab;
+    private javax.swing.JComboBox<String> CBMedida;
     private javax.swing.JLabel ChargeLabel;
     private javax.swing.JPanel ChargePanel;
     private javax.swing.JPanel ChargeTab;
@@ -502,29 +751,198 @@ public class MenuInicial extends javax.swing.JFrame {
     private javax.swing.JLabel UserIcon;
     private javax.swing.JLabel UserLogoLabel;
     private javax.swing.JLabel UsernameLabel;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JPanel jPanelbtnAgregar;
+    private javax.swing.JPanel jPanelbtnEditar;
+    private javax.swing.JPanel jPanelbtnEliminar;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelCantidadDisponible;
+    private javax.swing.JLabel labelCodigoProducto;
+    private javax.swing.JLabel labelNombre;
+    private javax.swing.JLabel labelPrecioCompra;
+    private javax.swing.JLabel labelPrecioVenta;
+    private javax.swing.JLabel labelUnidadMedida;
+    private javax.swing.JPanel panelFondoFormulario;
+    private javax.swing.JTable tblProductos;
+    private javax.swing.JTextField txtCantidadDisponible;
+    private javax.swing.JTextField txtCodigoProducto;
+    private javax.swing.JTextField txtNombreProducto;
+    private javax.swing.JTextField txtPrecioCompra;
+    private javax.swing.JTextField txtPrecioVenta;
     // End of variables declaration//GEN-END:variables
-    
-    public void configuraMenuDatos(int posicionUsuario){
+
+    public void configuraMenuDatos(int posicionUsuario) {
         ArrayList<Usuario> listaUsuarios = cargaArregloUsuarios();
-        Usuario Usuario = (Usuario)listaUsuarios.get(posicionUsuario);
-        String nombre = Usuario.getNombre() + " " + Usuario.getApellidoP() + " "  + Usuario.getApellidoM();
+        Usuario Usuario = (Usuario) listaUsuarios.get(posicionUsuario);
+        String nombre = Usuario.getNombre() + " " + Usuario.getApellidoP() + " " + Usuario.getApellidoM();
         cargaNombre(nombre);
         cargaPuesto(listaUsuarios, posicionUsuario);
-        
+
     }
-    public void cargaNombre(String nombre){
+
+    public void cargaNombre(String nombre) {
         UsernameLabel.setText(nombre);
         UsernameLabel.setHorizontalAlignment(0);
     }
-    public void cargaPuesto(ArrayList<Usuario> listaUsuarios, int posicionUsuario){
-        if(listaUsuarios.get(posicionUsuario) instanceof Gerente)
+
+    public void cargaPuesto(ArrayList<Usuario> listaUsuarios, int posicionUsuario) {
+        if (listaUsuarios.get(posicionUsuario) instanceof Gerente) {
             JobLabel.setText("Gerente");
-        if(listaUsuarios.get(posicionUsuario) instanceof Empleado)
+        }
+        if (listaUsuarios.get(posicionUsuario) instanceof Empleado) {
             JobLabel.setText("Empleado");
+            restringir();
+        }
         JobLabel.setHorizontalAlignment(0);
     }
     //Aquí van métodos de sus respectivas pestañas
-    
-}
 
+    public void escribir() {
+        try {
+            ObjectOutputStream escribiendo = new ObjectOutputStream(new FileOutputStream("listaProductos.dat"));
+
+            System.out.println("Datos guardados correctamente");
+            escribiendo.writeObject(listaProductos);
+            escribiendo.close();
+
+        } catch (IOException e) {
+            System.out.println("Error");
+        }
+    }
+
+    public static ArrayList<Producto> leer() {
+        ArrayList<Producto> listaProductosArchivo = new ArrayList<>();
+
+        try {
+            ObjectInputStream leyendo = new ObjectInputStream(new FileInputStream("listaProductos.dat"));
+            listaProductosArchivo = (ArrayList<Producto>) leyendo.readObject();
+            leyendo.close();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error");
+        }
+
+        return listaProductosArchivo;
+    }
+
+    public void limpiar() {
+        txtNombreProducto.setText("");
+        txtCodigoProducto.setText("");
+        txtPrecioVenta.setText("");
+        txtPrecioCompra.setText("");
+        txtCantidadDisponible.setText("");
+        CBMedida.setSelectedIndex(0);
+    }
+
+    public void llenarTabla() {
+        String nombre = txtNombreProducto.getText();
+        String codigoProducto = txtCodigoProducto.getText();
+        double precioVenta = Double.parseDouble(txtPrecioVenta.getText());
+        double precioCompra = Double.parseDouble(txtPrecioCompra.getText());
+        int cantidadDisponible = Integer.parseInt(txtCantidadDisponible.getText());
+        String unidadMedida = CBMedida.getSelectedItem().toString();
+
+        try {
+            if (nombre.isBlank()) {
+                throw new InventarioException("Debe llenar el nombre");
+            }
+            if (CBMedida.getSelectedIndex() == 0) {
+                throw new InventarioException("Debes seleccionar una unidad de medida");
+            }
+            if (!codigoProducto.matches("[0-9]{10}")) {
+                throw new InventarioException("El codigo solo admite números de 10 caracteres");
+            }
+
+            boolean repetida = false;
+            for (int i = 0; i < listaProductos.size(); i++) {
+                if (codigoProducto.equals(listaProductos.get(i).getCodigoProducto())) {
+                    listaProductos.get(i).setCantidadDisponible(listaProductos.get(i).getCantidadDisponible() + cantidadDisponible);
+                    repetida = true;
+                }
+            }
+
+            if (repetida == false) {
+                listaProductos.add(new Producto(nombre, codigoProducto, precioVenta, precioCompra, cantidadDisponible, unidadMedida));
+            }
+
+            mostrar();
+            escribir();
+            limpiar();
+
+        } catch (InventarioException err) {
+            JOptionPane.showMessageDialog(null, err.getMessage());
+        }
+    }
+
+    public void mostrar() {
+        Object[][] matriz = new Object[listaProductos.size()][6];
+
+        for (int i = 0; i < listaProductos.size(); i++) {
+            matriz[i][0] = listaProductos.get(i).getNombreProducto();
+            matriz[i][1] = listaProductos.get(i).getCodigoProducto();
+            matriz[i][2] = listaProductos.get(i).getPrecioVenta();
+            matriz[i][3] = listaProductos.get(i).getPrecioCompra();
+            matriz[i][4] = listaProductos.get(i).getCantidadDisponible();
+            matriz[i][5] = listaProductos.get(i).getUnidadMedida();
+        }
+
+        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
+                matriz,
+                new String[]{
+                    "Nombre", "Código", "Precio Venta", "Precio Compra", "Cantidad Disponible", "Unidad de Medida"
+                }
+        ));
+    }
+
+    public void eliminar(int filaSelec) {
+
+        String nombre = tblProductos.getValueAt(filaSelec, 0).toString();
+        for (int i = 0; i < listaProductos.size(); i++) {
+            if (nombre == listaProductos.get(i).getNombreProducto()) {
+                listaProductos.remove(i);
+            }
+        }
+
+        try {
+            ObjectOutputStream escribiendo = new ObjectOutputStream(new FileOutputStream("listaProductos.dat"));
+
+            System.out.println("Datos elimnados correctamente");
+            escribiendo.reset();
+            escribiendo.close();
+
+        } catch (IOException e) {
+            System.out.println("Error");
+        }
+        escribir();
+        mostrar();
+    }
+
+    public void editar() {
+        int filaSelec = tblProductos.getSelectedRow();
+
+        if (filaSelec >= 0) {
+
+            txtNombreProducto.setText(tblProductos.getValueAt(filaSelec, 0).toString());
+            txtCodigoProducto.setText(tblProductos.getValueAt(filaSelec, 1).toString());
+            txtPrecioVenta.setText(tblProductos.getValueAt(filaSelec, 2).toString());
+            txtPrecioCompra.setText(tblProductos.getValueAt(filaSelec, 3).toString());
+            txtCantidadDisponible.setText(tblProductos.getValueAt(filaSelec, 4).toString());
+            CBMedida.setSelectedItem(tblProductos.getValueAt(filaSelec, 5));
+
+            listaProductos.remove(filaSelec);
+            escribir();
+            mostrar();
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecciona un elemento para editar");
+        }
+
+    }
+
+    public void restringir() {
+        jPanelbtnAgregar.setVisible(false);
+        jPanelbtnEliminar.setVisible(false);
+        jPanelbtnEditar.setVisible(false);
+    }
+}

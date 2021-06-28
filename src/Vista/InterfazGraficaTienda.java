@@ -12,15 +12,8 @@ import Modelo.Usuarios.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**

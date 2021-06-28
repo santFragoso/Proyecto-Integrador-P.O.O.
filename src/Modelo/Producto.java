@@ -5,84 +5,87 @@
  */
 package Modelo;
 
+import java.io.Serializable;
+
 /**
  *
  * @author 4PF42LA_RS6
  */
-class Producto {
-    private String nombreProducto;
-    private int codigoProducto;
-    private ValorMonetario precioVenta;
-    private boolean disponibilidad;
-    private ValorMonetario precioCompra;
-    private double margenGanancia;
-    private String unidadMedida;
+public class Producto implements Serializable {
+   private String nombreProducto;
+   private String codigoProducto;
+   private double precioVenta;
+   private double precioCompra;
+   private int cantidadDisponible;
+   private String unidadMedida;
 
-    public Producto(String nombreProducto, int codigoProducto, ValorMonetario precioVenta, boolean disponibilidad, ValorMonetario precioCompra, double margenGanancia, String unidadMedida) {
-        this.nombreProducto = nombreProducto;
-        this.codigoProducto = codigoProducto;
-        this.precioVenta = precioVenta;
-        this.disponibilidad = disponibilidad;
-        this.precioCompra = precioCompra;
-        this.margenGanancia = margenGanancia;
-        this.unidadMedida = unidadMedida;
+    public Producto(String nombreProducto, String codigoProducto, double precioVenta, double precioCompra, int cantidadDisponible, String unidadMedida) {
+        setNombreProducto(nombreProducto);
+        setCodigoProducto(codigoProducto);
+        setPrecioVenta(precioVenta);
+        setPrecioCompra(precioCompra);
+        setCantidadDisponible(cantidadDisponible);
+        setUnidadMedida(unidadMedida);
     }
 
     public String getNombreProducto() {
         return nombreProducto;
     }
 
-    public int getCodigoProducto() {
+    public String getCodigoProducto() {
         return codigoProducto;
     }
 
-    public ValorMonetario getPrecioVenta() {
+    public double getPrecioVenta() {
         return precioVenta;
     }
 
-    public boolean isDisponibilidad() {
-        return disponibilidad;
-    }
-
-    public ValorMonetario getPrecioCompra() {
+    public double getPrecioCompra() {
         return precioCompra;
     }
 
-    public double getMargenGanancia() {
-        return margenGanancia;
+    public int getCantidadDisponible() {
+        return cantidadDisponible;
     }
 
     public String getUnidadMedida() {
         return unidadMedida;
     }
-
+    
     public void setNombreProducto(String nombreProducto) {
         this.nombreProducto = nombreProducto;
     }
 
-    public void setCodigoProducto(int codigoProducto) {
+    public void setCodigoProducto(String codigoProducto) {
         this.codigoProducto = codigoProducto;
     }
 
-    public void setPrecioVenta(ValorMonetario precioVenta) {
-        this.precioVenta = precioVenta;
+    public void setPrecioVenta(double precioVenta) {
+        if(precioVenta < 0)
+            this.precioVenta = 0;
+        else
+            this.precioVenta = precioVenta;
     }
 
-    public void setDisponibilidad(boolean disponibilidad) {
-        this.disponibilidad = disponibilidad;
+    public void setPrecioCompra(double precioCompra) {
+        if(precioCompra < 0)
+            this.precioCompra = 0;
+        else
+            this.precioCompra = precioCompra;
     }
 
-    public void setPrecioCompra(ValorMonetario precioCompra) {
-        this.precioCompra = precioCompra;
-    }
-
-    public void setMargenGanancia(double margenGanancia) {
-        this.margenGanancia = margenGanancia;
+    public void setCantidadDisponible(int cantidadDisponible) {
+        if(cantidadDisponible < 0)
+            this.cantidadDisponible = 0;
+        else 
+            this.cantidadDisponible = cantidadDisponible;
     }
 
     public void setUnidadMedida(String unidadMedida) {
         this.unidadMedida = unidadMedida;
     }
-    
-    
+   
+   
+
+
 }
