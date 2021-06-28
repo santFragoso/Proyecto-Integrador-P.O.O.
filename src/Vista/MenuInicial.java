@@ -941,6 +941,12 @@ public class MenuInicial extends javax.swing.JFrame {
     }
 
     public void restringir() {
+        txtNombreProducto.setEditable(false);
+        txtCodigoProducto.setEditable(false);
+        txtPrecioVenta.setEditable(false);
+        txtPrecioCompra.setEditable(false);
+        CBMedida.setEnabled(false);
+        txtCantidadDisponible.setEditable(false);
         jPanelbtnAgregar.setVisible(false);
         jPanelbtnEliminar.setVisible(false);
         jPanelbtnEditar.setVisible(false);
