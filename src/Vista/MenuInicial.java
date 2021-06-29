@@ -627,7 +627,7 @@ public class MenuInicial extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-        listaProductos = leer();
+        listaProductos = leerArchivoInventario();
         mostrar();
     }//GEN-LAST:event_formWindowOpened
 
@@ -805,9 +805,9 @@ public class MenuInicial extends javax.swing.JFrame {
     }
     //Aquí van métodos de sus respectivas pestañas
 
-    public void escribir() {
+    public void actualizarInventario() {
         try {
-            ObjectOutputStream escribiendo = new ObjectOutputStream(new FileOutputStream("listaProductos.dat"));
+            ObjectOutputStream escribiendo = new ObjectOutputStream(new FileOutputStream("listaProductos..dat"));
 
             System.out.println("Datos guardados correctamente");
             escribiendo.writeObject(listaProductos);
@@ -818,7 +818,7 @@ public class MenuInicial extends javax.swing.JFrame {
         }
     }
 
-    public static ArrayList<Producto> leer() {
+    public static ArrayList<Producto> leerArchivoInventario() {
         ArrayList<Producto> listaProductosArchivo = new ArrayList<>();
 
         try {
@@ -832,6 +832,7 @@ public class MenuInicial extends javax.swing.JFrame {
         return listaProductosArchivo;
     }
 
+    //Método para limpiar el formulario
     public void limpiar() {
         txtNombreProducto.setText("");
         txtCodigoProducto.setText("");
@@ -841,6 +842,7 @@ public class MenuInicial extends javax.swing.JFrame {
         CBMedida.setSelectedIndex(0);
     }
 
+    //Método para llenar la tabla con los datos del formulario y el método mostrar
     public void llenarTabla() {
         String nombre = txtNombreProducto.getText();
         String codigoProducto = txtCodigoProducto.getText();
@@ -859,7 +861,9 @@ public class MenuInicial extends javax.swing.JFrame {
             if (!codigoProducto.matches("[0-9]{10}")) {
                 throw new InventarioException("El codigo solo admite números de 10 caracteres");
             }
-
+            
+            
+            //Aqui hago que si hay algun producto repetido solo le sume la cantidad de elementos de ese producto
             boolean repetida = false;
             for (int i = 0; i < listaProductos.size(); i++) {
                 if (codigoProducto.equals(listaProductos.get(i).getCodigoProducto())) {
@@ -873,7 +877,7 @@ public class MenuInicial extends javax.swing.JFrame {
             }
 
             mostrar();
-            escribir();
+            actualizarInventario();
             limpiar();
 
         } catch (InventarioException err) {
@@ -881,9 +885,11 @@ public class MenuInicial extends javax.swing.JFrame {
         }
     }
 
+    //Este método es para cargar el modelo de la tabla
     public void mostrar() {
         Object[][] matriz = new Object[listaProductos.size()][6];
-
+        
+        //Creo una matriz de tipo objecto con todos los datos del producto
         for (int i = 0; i < listaProductos.size(); i++) {
             matriz[i][0] = listaProductos.get(i).getNombreProducto();
             matriz[i][1] = listaProductos.get(i).getCodigoProducto();
@@ -892,7 +898,8 @@ public class MenuInicial extends javax.swing.JFrame {
             matriz[i][4] = listaProductos.get(i).getCantidadDisponible();
             matriz[i][5] = listaProductos.get(i).getUnidadMedida();
         }
-
+        
+        //Cargo el modelo de la tabla con la matriz y el string de columnas
         tblProductos.setModel(new javax.swing.table.DefaultTableModel(
                 matriz,
                 new String[]{
@@ -901,15 +908,18 @@ public class MenuInicial extends javax.swing.JFrame {
         ));
     }
 
+    //Metodo para eliminar un elemento de la tabla y del inventario
     public void eliminar(int filaSelec) {
-
+        
+        //Ubico el elemento a eliminar
         String nombre = tblProductos.getValueAt(filaSelec, 0).toString();
         for (int i = 0; i < listaProductos.size(); i++) {
             if (nombre == listaProductos.get(i).getNombreProducto()) {
                 listaProductos.remove(i);
             }
         }
-
+        
+        //Reseteo el archivo binario para eliminar el elemento
         try {
             ObjectOutputStream escribiendo = new ObjectOutputStream(new FileOutputStream("listaProductos.dat"));
 
@@ -918,17 +928,21 @@ public class MenuInicial extends javax.swing.JFrame {
             escribiendo.close();
 
         } catch (IOException e) {
-            System.out.println("Error");
+            System.out.println(e.getMessage());
         }
-        escribir();
+        //Escribo nuevamente el array en el archivo binario
+        actualizarInventario();
         mostrar();
     }
 
+    //Método para editar elemento de la tabla
     public void editar() {
+        //Obtengo la fila que se va a editar
         int filaSelec = tblProductos.getSelectedRow();
 
         if (filaSelec >= 0) {
 
+            //Lleno los campos del formulario con el elemento a editar para que puedan ser modificados
             txtNombreProducto.setText(tblProductos.getValueAt(filaSelec, 0).toString());
             txtCodigoProducto.setText(tblProductos.getValueAt(filaSelec, 1).toString());
             txtPrecioVenta.setText(tblProductos.getValueAt(filaSelec, 2).toString());
@@ -936,8 +950,9 @@ public class MenuInicial extends javax.swing.JFrame {
             txtCantidadDisponible.setText(tblProductos.getValueAt(filaSelec, 4).toString());
             CBMedida.setSelectedItem(tblProductos.getValueAt(filaSelec, 5));
 
+            //Elimino el elemento que se seleccionó para no tener 2 veces el mismo
             listaProductos.remove(filaSelec);
-            escribir();
+            actualizarInventario();
             mostrar();
         } else {
             JOptionPane.showMessageDialog(null, "Selecciona un elemento para editar");
@@ -945,6 +960,7 @@ public class MenuInicial extends javax.swing.JFrame {
 
     }
 
+    //Método para restringir la modificación del inventario
     public void restringir() {
         txtNombreProducto.setEditable(false);
         txtCodigoProducto.setEditable(false);
