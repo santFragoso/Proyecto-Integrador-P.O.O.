@@ -5,15 +5,17 @@
  */
 package Modelo;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author 4PF42LA_RS6
  */
 public class Tienda {
     private String descripcion;
-    private Inventario inventarioGeneral;
+    private ArrayList<Producto> inventarioGeneral;
 
-    public Tienda(String descripcion, Inventario inventarioGeneral) {
+    public Tienda(String descripcion, ArrayList<Producto> inventarioGeneral) {
         this.descripcion = descripcion;
         this.inventarioGeneral = inventarioGeneral;
     }
@@ -22,7 +24,7 @@ public class Tienda {
         return descripcion;
     }
 
-    public Inventario getInventarioGeneral() {
+    public ArrayList<Producto> getInventarioGeneral() {
         return inventarioGeneral;
     }
 
@@ -30,7 +32,7 @@ public class Tienda {
         this.descripcion = descripcion;
     }
 
-    public void setInventarioGeneral(Inventario inventarioGeneral) {
+    public void setInventarioGeneral(ArrayList<Producto> inventarioGeneral) {
         this.inventarioGeneral = inventarioGeneral;
     }
 

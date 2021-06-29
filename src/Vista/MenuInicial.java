@@ -5,10 +5,28 @@
  */
 package Vista;
 
+import Alerta.AlertaMenuCobrar;
 import static Aplicacion.PruebaInterfazTienda.cargaArregloUsuarios;
+import Modelo.Exception.MyException;
+import Modelo.Producto;
 import Modelo.Usuarios.*;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -19,9 +37,33 @@ public class MenuInicial extends javax.swing.JFrame {
     /**
      * Creates new form MenuInicial
      */
+    //Variables globales de utilidad
+    DefaultTableModel modelo;
+    DefaultComboBoxModel modeloCB;
+    ArrayList<Producto> listaProductos;
+    ArrayList<Usuario> listaUsuarios;
+    
     public MenuInicial() {
+        listaUsuarios = new ArrayList<>();
+        listaUsuarios = cargaArregloUsuarios();
         initComponents();
+        //Centramos el menú
         this.setLocationRelativeTo(null);
+    }
+    //Método para configurar los valores del header de la tabla 
+    public class HeaderColor extends DefaultTableCellRenderer {
+
+        public HeaderColor() {
+            setOpaque(true);
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
+            super.getTableCellRendererComponent(table, value, selected, focused, row, column);
+            setBackground(new Color(255,102,51));
+            setForeground(new Color(255,255,255));
+            return this;
+        }
     }
 
     /**
@@ -33,7 +75,7 @@ public class MenuInicial extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLayeredPane1 = new javax.swing.JLayeredPane();
+        PanelTabs = new javax.swing.JLayeredPane();
         TitleLabel = new javax.swing.JLabel();
         TitleLogoLabel = new javax.swing.JLabel();
         MenuTitleLabel = new javax.swing.JLabel();
@@ -59,35 +101,65 @@ public class MenuInicial extends javax.swing.JFrame {
         InventoryIcon = new javax.swing.JLabel();
         Tabs = new javax.swing.JTabbedPane();
         ChargeTab = new javax.swing.JPanel();
+        ChargeMenuBackground = new javax.swing.JPanel();
+        CodeLabel = new javax.swing.JLabel();
+        QuantityCLabel = new javax.swing.JLabel();
+        TotalLabel = new javax.swing.JLabel();
+        SaleTxt = new javax.swing.JTextField();
+        QuantityCTxt = new javax.swing.JTextField();
+        DiscountLabel = new javax.swing.JLabel();
+        QuantityALabel = new javax.swing.JLabel();
+        ProductLabel = new javax.swing.JLabel();
+        CBProduct = new javax.swing.JComboBox<>();
+        TotalTxt = new javax.swing.JTextField();
+        QuantityATxt = new javax.swing.JTextField();
+        AddButton = new javax.swing.JPanel();
+        DeleteLabel = new javax.swing.JLabel();
+        PriceLabel1 = new javax.swing.JLabel();
+        PriceTxt = new javax.swing.JTextField();
+        SaleLabel = new javax.swing.JLabel();
+        SubtotalTxt = new javax.swing.JTextField();
+        SubtotalLabel = new javax.swing.JLabel();
+        DiscountTxt = new javax.swing.JTextField();
+        AddButton1 = new javax.swing.JPanel();
+        AddLabel = new javax.swing.JLabel();
+        CodeTxt = new javax.swing.JTextField();
+        ScrollPanePT = new javax.swing.JScrollPane();
+        ProductsTable = new javax.swing.JTable();
         AdministrationTab = new javax.swing.JPanel();
         InventoryTab = new javax.swing.JPanel();
         SettingsTab = new javax.swing.JPanel();
 
-        javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
-        jLayeredPane1.setLayout(jLayeredPane1Layout);
-        jLayeredPane1Layout.setHorizontalGroup(
-            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout PanelTabsLayout = new javax.swing.GroupLayout(PanelTabs);
+        PanelTabs.setLayout(PanelTabsLayout);
+        PanelTabsLayout.setHorizontalGroup(
+            PanelTabsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 100, Short.MAX_VALUE)
         );
-        jLayeredPane1Layout.setVerticalGroup(
-            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        PanelTabsLayout.setVerticalGroup(
+            PanelTabsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         TitleLabel.setFont(new java.awt.Font("Microsoft Yi Baiti", 2, 48)); // NOI18N
         TitleLabel.setForeground(new java.awt.Color(255, 255, 255));
         TitleLabel.setText("Sistema de administración de tiendas");
-        getContentPane().add(TitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 0, 660, 110));
+        getContentPane().add(TitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 0, 660, 140));
 
         TitleLogoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Images/CarritoComprasLogo.png"))); // NOI18N
-        getContentPane().add(TitleLogoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 60, 110));
+        getContentPane().add(TitleLogoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 60, 140));
 
         MenuTitleLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Images/PanelRojo.png"))); // NOI18N
-        getContentPane().add(MenuTitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 910, 110));
+        getContentPane().add(MenuTitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 140));
 
         PinkPanel.setBackground(new java.awt.Color(255, 185, 185));
         PinkPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -95,7 +167,7 @@ public class MenuInicial extends javax.swing.JFrame {
         UsernameLabel.setBackground(new java.awt.Color(0, 0, 0));
         UsernameLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         UsernameLabel.setForeground(new java.awt.Color(255, 255, 255));
-        PinkPanel.add(UsernameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 290, 30));
+        PinkPanel.add(UsernameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 300, 30));
 
         UserLogoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Images/ImagenUsuario.png"))); // NOI18N
         PinkPanel.add(UserLogoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 150, 130));
@@ -103,12 +175,12 @@ public class MenuInicial extends javax.swing.JFrame {
         JobLabel.setBackground(new java.awt.Color(0, 0, 0));
         JobLabel.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         JobLabel.setForeground(new java.awt.Color(255, 255, 255));
-        PinkPanel.add(JobLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 290, 30));
+        PinkPanel.add(JobLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 300, 30));
 
         ProfileLabel.setBackground(new java.awt.Color(255, 102, 102));
         ProfileLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Images/PanelRojoRosa.png"))); // NOI18N
         ProfileLabel.setText("jLabel2");
-        PinkPanel.add(ProfileLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 290, 280));
+        PinkPanel.add(ProfileLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 300, 280));
 
         ChargePanel.setBackground(new java.awt.Color(189, 47, 47));
         ChargePanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -140,7 +212,7 @@ public class MenuInicial extends javax.swing.JFrame {
                 .addComponent(MoneyIcon)
                 .addGap(18, 18, 18)
                 .addComponent(ChargeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addContainerGap(122, Short.MAX_VALUE))
         );
         ChargePanelLayout.setVerticalGroup(
             ChargePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,7 +220,7 @@ public class MenuInicial extends javax.swing.JFrame {
             .addComponent(ChargeLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        PinkPanel.add(ChargePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 290, 70));
+        PinkPanel.add(ChargePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 300, 70));
 
         ConfigurationPanel.setBackground(new java.awt.Color(255, 142, 142));
         ConfigurationPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -180,7 +252,7 @@ public class MenuInicial extends javax.swing.JFrame {
                 .addComponent(ConfigurationIcon)
                 .addGap(18, 18, 18)
                 .addComponent(ConfigurationLabel)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
         ConfigurationPanelLayout.setVerticalGroup(
             ConfigurationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,7 +260,7 @@ public class MenuInicial extends javax.swing.JFrame {
             .addComponent(ConfigurationIcon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
         );
 
-        PinkPanel.add(ConfigurationPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 470, 290, 70));
+        PinkPanel.add(ConfigurationPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 470, 300, 70));
 
         AdministrationPanel.setBackground(new java.awt.Color(236, 75, 75));
         AdministrationPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -220,7 +292,7 @@ public class MenuInicial extends javax.swing.JFrame {
                 .addComponent(UserIcon)
                 .addGap(18, 18, 18)
                 .addComponent(AdministrationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
         AdministrationPanelLayout.setVerticalGroup(
             AdministrationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -228,7 +300,7 @@ public class MenuInicial extends javax.swing.JFrame {
             .addComponent(UserIcon, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
         );
 
-        PinkPanel.add(AdministrationPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 290, 70));
+        PinkPanel.add(AdministrationPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 300, 70));
 
         LogoutPanel.setBackground(new java.awt.Color(255, 81, 81));
         LogoutPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -260,7 +332,7 @@ public class MenuInicial extends javax.swing.JFrame {
                 .addComponent(LogoutIcon)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(LogoutLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
         LogoutPanelLayout.setVerticalGroup(
             LogoutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -268,7 +340,7 @@ public class MenuInicial extends javax.swing.JFrame {
             .addComponent(LogoutLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        PinkPanel.add(LogoutPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 660, 290, 70));
+        PinkPanel.add(LogoutPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 660, 300, 70));
 
         InventoryPanel.setBackground(new java.awt.Color(255, 81, 81));
         InventoryPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -300,7 +372,7 @@ public class MenuInicial extends javax.swing.JFrame {
                 .addComponent(InventoryIcon)
                 .addGap(18, 18, 18)
                 .addComponent(InventoryLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
         InventoryPanelLayout.setVerticalGroup(
             InventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -308,22 +380,157 @@ public class MenuInicial extends javax.swing.JFrame {
             .addComponent(InventoryLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        PinkPanel.add(InventoryPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 290, 70));
+        PinkPanel.add(InventoryPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 300, 70));
 
-        getContentPane().add(PinkPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 0, 290, 730));
+        getContentPane().add(PinkPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 0, 300, 730));
 
         ChargeTab.setBackground(new java.awt.Color(255, 255, 255));
+        ChargeTab.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout ChargeTabLayout = new javax.swing.GroupLayout(ChargeTab);
-        ChargeTab.setLayout(ChargeTabLayout);
-        ChargeTabLayout.setHorizontalGroup(
-            ChargeTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 905, Short.MAX_VALUE)
-        );
-        ChargeTabLayout.setVerticalGroup(
-            ChargeTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 590, Short.MAX_VALUE)
-        );
+        ChargeMenuBackground.setBackground(new java.awt.Color(255, 177, 99));
+        ChargeMenuBackground.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        CodeLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        CodeLabel.setForeground(new java.awt.Color(255, 255, 255));
+        CodeLabel.setText("Código");
+        ChargeMenuBackground.add(CodeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, 240, 30));
+
+        QuantityCLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        QuantityCLabel.setForeground(new java.awt.Color(255, 255, 255));
+        QuantityCLabel.setText("Cantidad a comprar");
+        ChargeMenuBackground.add(QuantityCLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 240, 30));
+
+        TotalLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        TotalLabel.setForeground(new java.awt.Color(255, 255, 255));
+        TotalLabel.setText("Total a pagar");
+        ChargeMenuBackground.add(TotalLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 160, 210, 30));
+
+        SaleTxt.setEditable(false);
+        SaleTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ChargeMenuBackground.add(SaleTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 230, 110, 30));
+
+        QuantityCTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        QuantityCTxt.setBorder(null);
+        QuantityCTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                QuantityCTxtActionPerformed(evt);
+            }
+        });
+        ChargeMenuBackground.add(QuantityCTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, 110, 30));
+
+        DiscountLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        DiscountLabel.setForeground(new java.awt.Color(255, 255, 255));
+        DiscountLabel.setText("Descuento (%)");
+        ChargeMenuBackground.add(DiscountLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 120, 290, 30));
+
+        QuantityALabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        QuantityALabel.setForeground(new java.awt.Color(255, 255, 255));
+        QuantityALabel.setText("Cantidad disponible");
+        ChargeMenuBackground.add(QuantityALabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 80, 300, 30));
+
+        ProductLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        ProductLabel.setForeground(new java.awt.Color(255, 255, 255));
+        ProductLabel.setText("Producto");
+        ChargeMenuBackground.add(ProductLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 40, 110, 30));
+
+        CBProduct.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        CBProduct.setBorder(null);
+        CBProduct.setOpaque(false);
+        CBProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CBProductActionPerformed(evt);
+            }
+        });
+        ChargeMenuBackground.add(CBProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, 270, 30));
+
+        TotalTxt.setEditable(false);
+        TotalTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ChargeMenuBackground.add(TotalTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 160, 100, 30));
+
+        QuantityATxt.setEditable(false);
+        QuantityATxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ChargeMenuBackground.add(QuantityATxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 80, 100, 30));
+
+        AddButton.setBackground(new java.awt.Color(204, 102, 0));
+        AddButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        DeleteLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        DeleteLabel.setForeground(new java.awt.Color(255, 255, 255));
+        DeleteLabel.setText("Eliminar");
+        AddButton.add(DeleteLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, 40));
+
+        ChargeMenuBackground.add(AddButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 230, 80, 40));
+
+        PriceLabel1.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        PriceLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        PriceLabel1.setText("Precio unitario");
+        ChargeMenuBackground.add(PriceLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, 240, 30));
+
+        PriceTxt.setEditable(false);
+        PriceTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ChargeMenuBackground.add(PriceTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 120, 110, 30));
+
+        SaleLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        SaleLabel.setForeground(new java.awt.Color(255, 255, 255));
+        SaleLabel.setText("Número de venta");
+        ChargeMenuBackground.add(SaleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 230, 240, 30));
+
+        SubtotalTxt.setEditable(false);
+        SubtotalTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ChargeMenuBackground.add(SubtotalTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 160, 110, 30));
+
+        SubtotalLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        SubtotalLabel.setForeground(new java.awt.Color(255, 255, 255));
+        SubtotalLabel.setText("Subtotal sin descuento");
+        ChargeMenuBackground.add(SubtotalLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, 210, 30));
+
+        DiscountTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        DiscountTxt.setBorder(null);
+        DiscountTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DiscountTxtActionPerformed(evt);
+            }
+        });
+        ChargeMenuBackground.add(DiscountTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 120, 100, 30));
+
+        AddButton1.setBackground(new java.awt.Color(204, 102, 0));
+        AddButton1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        AddLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        AddLabel.setForeground(new java.awt.Color(255, 255, 255));
+        AddLabel.setText("Añadir");
+        AddButton1.add(AddLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 0, 60, 40));
+
+        ChargeMenuBackground.add(AddButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 230, 80, 40));
+
+        CodeTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        CodeTxt.setBorder(null);
+        CodeTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CodeTxtActionPerformed(evt);
+            }
+        });
+        ChargeMenuBackground.add(CodeTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 40, 110, 30));
+
+        ChargeTab.add(ChargeMenuBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 880, 290));
+
+        ProductsTable.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        ProductsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        ProductsTable.setSelectionBackground(new java.awt.Color(255, 102, 102));
+        ProductsTable.getTableHeader().setReorderingAllowed(false);
+        ScrollPanePT.setViewportView(ProductsTable);
+
+        ChargeTab.add(ScrollPanePT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 880, 260));
 
         Tabs.addTab("Cobrar", ChargeTab);
 
@@ -438,6 +645,181 @@ public class MenuInicial extends javax.swing.JFrame {
         Tabs.setSelectedIndex(3);
     }//GEN-LAST:event_ConfigurationPanelMouseClicked
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        listaProductos = new ArrayList<>();
+        //Realizando la carga de los productos al inventario
+        agregaProductos();
+        System.out.println(listaProductos);
+        actualizaInventario();
+        listaProductos = cargaInventario();
+        System.out.println(listaProductos);
+        
+        //Configurando a la tabla del menú de cobro
+        //Inicializando modelo
+        modelo = new DefaultTableModel(){
+            //Haciendo celdas dentro de la tabla no editables
+            @Override
+            public boolean isCellEditable(int rowIndex, int mColIndex){
+                return false;
+            }
+        };
+        //Colocando títulos al encabezado de la tabla
+        modelo.addColumn("Código");
+        modelo.addColumn("Producto");
+        modelo.addColumn("Precio");
+        modelo.addColumn("Cantidad");
+        modelo.addColumn("Total");
+        //Estableciendo modelo a la tabla
+        ProductsTable.setModel(modelo);
+        JTableHeader Theader = ProductsTable.getTableHeader();
+        
+        Theader.setDefaultRenderer(new HeaderColor());
+        Theader.setFont(new Font("Segoe UI", Font.BOLD, 80));
+        Theader.setOpaque(false);
+        ((DefaultTableCellRenderer) Theader.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+        
+        ProductsTable.setRowHeight(25);
+        //Estableciendo tamaños de las columnas
+        ProductsTable.getColumnModel().getColumn(0).setMaxWidth(100);
+        ProductsTable.getColumnModel().getColumn(0).setPreferredWidth(100);
+        ProductsTable.getColumnModel().getColumn(2).setMaxWidth(100);
+        ProductsTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+        ProductsTable.getColumnModel().getColumn(3).setMaxWidth(100);
+        ProductsTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+        ProductsTable.getColumnModel().getColumn(4).setMaxWidth(100);
+        ProductsTable.getColumnModel().getColumn(4).setPreferredWidth(150);
+        
+        //Centrando valores dentro de las columnas
+        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
+        cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        ProductsTable.getColumnModel().getColumn(0).setCellRenderer(cellRenderer);
+        ProductsTable.getColumnModel().getColumn(1).setCellRenderer(cellRenderer);
+        ProductsTable.getColumnModel().getColumn(2).setCellRenderer(cellRenderer);
+        ProductsTable.getColumnModel().getColumn(3).setCellRenderer(cellRenderer);
+        ProductsTable.getColumnModel().getColumn(4).setCellRenderer(cellRenderer);
+        
+        
+        //Inicializando modelo del combobox utilizado en la selección de producto
+        modeloCB = new DefaultComboBoxModel();
+        
+        //for para añadir elementos al combobox
+        listaProductos.forEach((Producto) -> {
+            modeloCB.addElement(Producto.getNombreProducto());
+        });
+        
+        //Estableciendo modelo al combobox
+        CBProduct.setModel(modeloCB);
+        
+        //Configurando valores por defecto y alineación de los valores dentro de los campos de texto
+        CodeTxt.setHorizontalAlignment(SwingConstants.CENTER);
+        QuantityCTxt.setHorizontalAlignment(SwingConstants.RIGHT);
+        DiscountTxt.setHorizontalAlignment(SwingConstants.RIGHT);
+        QuantityATxt.setHorizontalAlignment(SwingConstants.RIGHT);
+        PriceTxt.setHorizontalAlignment(SwingConstants.RIGHT);
+        SubtotalTxt.setHorizontalAlignment(SwingConstants.RIGHT);
+        TotalTxt.setHorizontalAlignment(SwingConstants.RIGHT);
+        SaleTxt.setHorizontalAlignment(SwingConstants.RIGHT);
+        QuantityCTxt.setText("0");
+        DiscountTxt.setText("0");
+        QuantityATxt.setText("0");
+        PriceTxt.setText("0");
+
+    }//GEN-LAST:event_formWindowOpened
+
+    private void CBProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBProductActionPerformed
+        //Al seleccionar un producto se configuran los campos con sus valores correspondientes
+        CodeTxt.setText(listaProductos.get(CBProduct.getSelectedIndex()).getCodigoProducto());
+        QuantityATxt.setText(String.valueOf(listaProductos.get(CBProduct.getSelectedIndex()).getCantidadDisponible()));
+        PriceTxt.setText(String.valueOf(listaProductos.get(CBProduct.getSelectedIndex()).getPrecioVenta()));
+        DiscountTxt.setText("0");
+    }//GEN-LAST:event_CBProductActionPerformed
+
+    private void CodeTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CodeTxtActionPerformed
+        //Evento que permite establecer un producto ingresando el código correspondiente
+        boolean productoEncontrado = false;
+        /*Manejo de excepciones
+            Errores detectados:
+                - Al ingresar un texto vacío
+                - Si se ingresa una cadena y no un valor o si el valor es mayor o menor a 10 dígitos
+                - Si el código ingresado no existe     
+        */ 
+        try{
+            for (int i = 0; i < listaProductos.size(); i++){
+                if(CodeTxt.getText().equals(listaProductos.get(i).getCodigoProducto())){
+                    CBProduct.setSelectedIndex(i);
+                    productoEncontrado = true;
+                }
+            }
+            if(CodeTxt.getText() == null || CodeTxt.getText().trim().isEmpty()){
+                throw new MyException("El campo de código está vacío");
+            }
+            if(!(CodeTxt.getText().matches("[0-9]{10}"))){
+                throw new MyException("El código es incorrecto, solo pueden ser números y deben ser 10 dígitos");
+            }
+            if(productoEncontrado == false){
+                throw new MyException("El código ingresado no corresponde a ningún producto registrado");
+            }
+        }catch(MyException error){
+            CodeTxt.setText("");
+            AlertaMenuCobrar ErrorDatos = new AlertaMenuCobrar(this,true);
+            ErrorDatos.mensajeError(error.getMessage());
+            ErrorDatos.setVisible(true);
+        }
+    }//GEN-LAST:event_CodeTxtActionPerformed
+
+    private void QuantityCTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuantityCTxtActionPerformed
+        /*Manejo de excepciones
+            Errores detectados:
+                - Si la cantidad de compra es negativa o cero
+                - Si se excedió la cantidad de compra permitida
+                - Si se ingresó un texto en lugar de un valor
+        */
+        try{
+            int Cantidad = Integer.parseInt(QuantityCTxt.getText());
+            if(Cantidad <= 0){
+                throw new MyException("La cantidad de compra no puede ser igual a cero o negativa");
+            }
+            if(Cantidad > 20){
+                throw new MyException("Se ha excedido la cantidad permitida de compra (20 unidades)");
+            }
+        }catch(MyException error){
+            QuantityCTxt.setText("");
+            AlertaMenuCobrar ErrorDatos = new AlertaMenuCobrar(this,true);
+            ErrorDatos.mensajeError(error.getMessage());
+            ErrorDatos.setVisible(true);
+        }catch(NumberFormatException error2){
+            QuantityCTxt.setText("");
+            AlertaMenuCobrar ErrorDatos = new AlertaMenuCobrar(this,true);
+            ErrorDatos.mensajeError("Cantidad icorrecta. Solo se admiten números");
+            ErrorDatos.setVisible(true);
+        }
+        //Calculamos el subtotal
+        double subtotal = Double.parseDouble(PriceTxt.getText())*Double.parseDouble(QuantityCTxt.getText());
+        SubtotalTxt.setText(String.valueOf(subtotal));
+    }//GEN-LAST:event_QuantityCTxtActionPerformed
+
+    private void DiscountTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DiscountTxtActionPerformed
+        try{
+            int descuento = Integer.parseInt(DiscountTxt.getText());
+            if(descuento < 0){
+                throw new MyException("El descuento no puede ser negativo");
+            }
+            if(descuento > 100){
+                throw new MyException("El descuento máximo es de 100%");
+            }
+        }catch(MyException error){
+            DiscountTxt.setText("");
+            AlertaMenuCobrar ErrorDatos = new AlertaMenuCobrar(this,true);
+            ErrorDatos.mensajeError(error.getMessage());
+            ErrorDatos.setVisible(true);
+        }catch(NumberFormatException error2){
+            DiscountTxt.setText("");
+            AlertaMenuCobrar ErrorDatos = new AlertaMenuCobrar(this,true);
+            ErrorDatos.mensajeError("Cantidad icorrecta. Solo se admiten números");
+            ErrorDatos.setVisible(true);
+        }
+    }//GEN-LAST:event_DiscountTxtActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -474,15 +856,25 @@ public class MenuInicial extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel AddButton;
+    private javax.swing.JPanel AddButton1;
+    private javax.swing.JLabel AddLabel;
     private javax.swing.JLabel AdministrationLabel;
     private javax.swing.JPanel AdministrationPanel;
     private javax.swing.JPanel AdministrationTab;
+    private javax.swing.JComboBox<String> CBProduct;
     private javax.swing.JLabel ChargeLabel;
+    private javax.swing.JPanel ChargeMenuBackground;
     private javax.swing.JPanel ChargePanel;
     private javax.swing.JPanel ChargeTab;
+    private javax.swing.JLabel CodeLabel;
+    private javax.swing.JTextField CodeTxt;
     private javax.swing.JLabel ConfigurationIcon;
     private javax.swing.JLabel ConfigurationLabel;
     private javax.swing.JPanel ConfigurationPanel;
+    private javax.swing.JLabel DeleteLabel;
+    private javax.swing.JLabel DiscountLabel;
+    private javax.swing.JTextField DiscountTxt;
     private javax.swing.JLabel InventoryIcon;
     private javax.swing.JLabel InventoryLabel;
     private javax.swing.JPanel InventoryPanel;
@@ -493,38 +885,91 @@ public class MenuInicial extends javax.swing.JFrame {
     private javax.swing.JPanel LogoutPanel;
     private javax.swing.JLabel MenuTitleLabel;
     private javax.swing.JLabel MoneyIcon;
+    private javax.swing.JLayeredPane PanelTabs;
     private javax.swing.JPanel PinkPanel;
+    private javax.swing.JLabel PriceLabel1;
+    private javax.swing.JTextField PriceTxt;
+    private javax.swing.JLabel ProductLabel;
+    private javax.swing.JTable ProductsTable;
     private javax.swing.JLabel ProfileLabel;
+    private javax.swing.JLabel QuantityALabel;
+    private javax.swing.JTextField QuantityATxt;
+    private javax.swing.JLabel QuantityCLabel;
+    private javax.swing.JTextField QuantityCTxt;
+    private javax.swing.JLabel SaleLabel;
+    private javax.swing.JTextField SaleTxt;
+    private javax.swing.JScrollPane ScrollPanePT;
     private javax.swing.JPanel SettingsTab;
+    private javax.swing.JLabel SubtotalLabel;
+    private javax.swing.JTextField SubtotalTxt;
     private javax.swing.JTabbedPane Tabs;
     private javax.swing.JLabel TitleLabel;
     private javax.swing.JLabel TitleLogoLabel;
+    private javax.swing.JLabel TotalLabel;
+    private javax.swing.JTextField TotalTxt;
     private javax.swing.JLabel UserIcon;
     private javax.swing.JLabel UserLogoLabel;
     private javax.swing.JLabel UsernameLabel;
-    private javax.swing.JLayeredPane jLayeredPane1;
     // End of variables declaration//GEN-END:variables
-    
+    //Método que configura los datos personales del usuario dentro del menú principal
     public void configuraMenuDatos(int posicionUsuario){
-        ArrayList<Usuario> listaUsuarios = cargaArregloUsuarios();
         Usuario Usuario = (Usuario)listaUsuarios.get(posicionUsuario);
         String nombre = Usuario.getNombre() + " " + Usuario.getApellidoP() + " "  + Usuario.getApellidoM();
         cargaNombre(nombre);
-        cargaPuesto(listaUsuarios, posicionUsuario);
+        cargaPuesto(posicionUsuario);
         
     }
+    //Metodo que carga el nombre del usuario en sesión dentro del menú principal
     public void cargaNombre(String nombre){
         UsernameLabel.setText(nombre);
         UsernameLabel.setHorizontalAlignment(0);
     }
-    public void cargaPuesto(ArrayList<Usuario> listaUsuarios, int posicionUsuario){
+    //Método que carga el puesto correspondiente al usuario que inicio sesión dentro del menú principal
+    public void cargaPuesto(int posicionUsuario){
         if(listaUsuarios.get(posicionUsuario) instanceof Gerente)
             JobLabel.setText("Gerente");
         if(listaUsuarios.get(posicionUsuario) instanceof Empleado)
             JobLabel.setText("Empleado");
         JobLabel.setHorizontalAlignment(0);
     }
-    //Aquí van métodos de sus respectivas pestañas
-    
+    //Método que actualiza los datos dentro del archivo binario
+    public void actualizaInventario(){
+        
+        try{
+            ObjectOutputStream escribiendo = new ObjectOutputStream(new FileOutputStream("listaProductos.dat"));
+            
+            System.out.println("Datos guardados correctamente");
+            escribiendo.writeObject(listaProductos);
+            escribiendo.close();
+            
+        }catch (IOException e){
+            System.out.println("Error al actualizar inventario");  
+        }
+    }
+    //Método que realiza la carga de los datos contenidos en el archivo binario
+    public ArrayList<Producto> cargaInventario(){
+        ArrayList<Producto> listaProductosArchivo = new ArrayList<>();
+        try{
+           ObjectInputStream leyendo = new ObjectInputStream(new FileInputStream("listaProductos.dat"));
+           listaProductosArchivo = (ArrayList<Producto>)leyendo.readObject();
+           leyendo.close();
+        }catch (IOException | ClassNotFoundException e){
+           System.out.println("Error al realizar la carga del inventario"); 
+        }
+        return listaProductosArchivo;
+    }
+    //Método para cargar algunos productos al inventario (arrayList<Producto>)
+    public void agregaProductos(){
+        listaProductos.add(new Producto("Cheetos Bolita 50 gr","1012203214",13,10,12,"Pza"));
+        listaProductos.add(new Producto("Coca Cola 2.5 L","3093921359",30,25,15,"Pza"));
+        listaProductos.add(new Producto("Emperador Chocolate Gamesa 8 pzas","1293902341",15,12,25,"Pza"));
+        listaProductos.add(new Producto("Doritos Nacho 100 gr Sabritas","2394712022",17,15,10,"Pza"));
+        listaProductos.add(new Producto("Takis Fuego Barcel 50 gr","1293902341",12,10,10,"Pza"));
+        listaProductos.add(new Producto("Chocolate KitKat 40 gr","5100672182",16,14,10,"Pza"));
+        listaProductos.add((new Producto("Sprite Coca Cola 3 L","2319001492",30,25,12,"Pza")));
+    }
 }
+
+
+
 

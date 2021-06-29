@@ -5,22 +5,15 @@
  */
 package Vista;
 
-import Alerta.Alerta;
+import Alerta.AlertaMenu;
 import static Aplicacion.PruebaInterfazTienda.cargaArregloUsuarios;
 import Modelo.Login;
 import Modelo.Usuarios.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -146,7 +139,7 @@ public class InterfazGraficaTienda extends javax.swing.JFrame {
         AccessLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         AccessLabel.setForeground(new java.awt.Color(255, 255, 255));
         AccessLabel.setText("Acceder");
-        AccesPanelButton.add(AccessLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, -1, -1));
+        AccesPanelButton.add(AccessLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 5, -1, 20));
 
         BackgroundPanel.add(AccesPanelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 320, 120, 30));
 
@@ -219,7 +212,8 @@ public class InterfazGraficaTienda extends javax.swing.JFrame {
             ejecutaMenuInicial(posicionUsuario);
         }
         else{
-            new Alerta().setVisible(true);
+            AlertaMenu NuevaAlerta = new AlertaMenu(this,true);
+            NuevaAlerta.setVisible(true);
         }
     }
     

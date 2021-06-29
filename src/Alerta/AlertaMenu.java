@@ -11,13 +11,17 @@ import java.awt.Color;
  *
  * @author 4PF42LA_RS6
  */
-public class Alerta extends javax.swing.JFrame {
+public class AlertaMenu extends javax.swing.JDialog {
 
     /**
-     * Creates new form Alerta
+     * Creates new form AlertaMenu
+     * @param parent
+     * @param modal
      */
-    public Alerta() {
+    public AlertaMenu(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
+        AlertLabel.setHorizontalAlignment(0);
         this.setLocationRelativeTo(null);
     }
 
@@ -30,21 +34,18 @@ public class Alerta extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        AlertLabel = new javax.swing.JLabel();
+        Background = new javax.swing.JPanel();
         AlertaIconLabel = new javax.swing.JLabel();
         AcceptPanel = new javax.swing.JPanel();
         AcceptLabel = new javax.swing.JLabel();
+        AlertLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setLocation(new java.awt.Point(0, 0));
-        setResizable(false);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Error");
+        setIconImage(null);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-
-        AlertLabel.setFont(new java.awt.Font("Microsoft Yi Baiti", 0, 24)); // NOI18N
-        AlertLabel.setText("Usuario o contraseña incorrectos, vuelva a intentar");
+        Background.setBackground(new java.awt.Color(255, 255, 255));
 
         AlertaIconLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/AlertaLogo.png"))); // NOI18N
 
@@ -85,47 +86,52 @@ public class Alerta extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(218, 218, 218)
+        AlertLabel.setFont(new java.awt.Font("Microsoft Yi Baiti", 0, 24)); // NOI18N
+        AlertLabel.setText("Usuario o contraseña incorrectos, vuelva a intentar");
+
+        javax.swing.GroupLayout BackgroundLayout = new javax.swing.GroupLayout(Background);
+        Background.setLayout(BackgroundLayout);
+        BackgroundLayout.setHorizontalGroup(
+            BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BackgroundLayout.createSequentialGroup()
+                .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(BackgroundLayout.createSequentialGroup()
+                        .addGap(168, 168, 168)
+                        .addComponent(AcceptPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BackgroundLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(AlertLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .addGroup(BackgroundLayout.createSequentialGroup()
+                .addGap(212, 212, 212)
                 .addComponent(AlertaIconLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(AcceptPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(171, 171, 171))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
-                .addComponent(AlertLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+        BackgroundLayout.setVerticalGroup(
+            BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BackgroundLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
                 .addComponent(AlertaIconLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(AlertLabel)
-                .addGap(29, 29, 29)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(AcceptPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addGap(27, 27, 27))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 210));
+        getContentPane().add(Background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 490, 220));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void AcceptPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AcceptPanelMouseClicked
-        this.dispose();
-    }//GEN-LAST:event_AcceptPanelMouseClicked
-
     private void AcceptPanelMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AcceptPanelMouseMoved
         AcceptPanel.setBackground(new Color(255,153,0));
     }//GEN-LAST:event_AcceptPanelMouseMoved
+
+    private void AcceptPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AcceptPanelMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_AcceptPanelMouseClicked
 
     private void AcceptPanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AcceptPanelMouseExited
         AcceptPanel.setBackground(new Color(204,102,0));
@@ -140,6 +146,6 @@ public class Alerta extends javax.swing.JFrame {
     private javax.swing.JPanel AcceptPanel;
     private javax.swing.JLabel AlertLabel;
     private javax.swing.JLabel AlertaIconLabel;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel Background;
     // End of variables declaration//GEN-END:variables
 }
