@@ -10,6 +10,10 @@ import Modelo.InventarioException;
 import Modelo.Producto;
 import Modelo.Usuarios.*;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,6 +21,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -28,10 +39,28 @@ public class MenuInicial extends javax.swing.JFrame {
      * Creates new form MenuInicial
      */
     ArrayList<Producto> listaProductos = new ArrayList<>();
+    DefaultTableModel modelo;
+    private TableRowSorter trsFiltro;
 
     public MenuInicial() {
         initComponents();
         this.setLocationRelativeTo(null);
+    }
+
+    //Método para configurar los valores del header de la tabla 
+    public class HeaderColor extends DefaultTableCellRenderer {
+
+        public HeaderColor() {
+            setOpaque(true);
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
+            super.getTableCellRendererComponent(table, value, selected, focused, row, column);
+            setBackground(new Color(255, 102, 51));
+            setForeground(new Color(255, 255, 255));
+            return this;
+        }
     }
 
     /**
@@ -71,6 +100,8 @@ public class MenuInicial extends javax.swing.JFrame {
         ChargeTab = new javax.swing.JPanel();
         AdministrationTab = new javax.swing.JPanel();
         InventoryTab = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblProductos = new javax.swing.JTable();
         panelFondoFormulario = new javax.swing.JPanel();
         labelCodigoProducto = new javax.swing.JLabel();
         labelNombre = new javax.swing.JLabel();
@@ -80,7 +111,6 @@ public class MenuInicial extends javax.swing.JFrame {
         labelUnidadMedida = new javax.swing.JLabel();
         txtCantidadDisponible = new javax.swing.JTextField();
         txtCodigoProducto = new javax.swing.JTextField();
-        txtNombreProducto = new javax.swing.JTextField();
         txtPrecioVenta = new javax.swing.JTextField();
         txtPrecioCompra = new javax.swing.JTextField();
         jPanelbtnAgregar = new javax.swing.JPanel();
@@ -90,8 +120,11 @@ public class MenuInicial extends javax.swing.JFrame {
         jPanelbtnEditar = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         CBMedida = new javax.swing.JComboBox<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblProductos = new javax.swing.JTable();
+        txtNombreProducto = new javax.swing.JTextField();
+        jPanelbtnLimpiarInventario = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        txtBusqueda = new javax.swing.JTextField();
         SettingsTab = new javax.swing.JPanel();
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
@@ -108,6 +141,9 @@ public class MenuInicial extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
@@ -358,7 +394,7 @@ public class MenuInicial extends javax.swing.JFrame {
         );
         ChargeTabLayout.setVerticalGroup(
             ChargeTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 590, Short.MAX_VALUE)
+            .addGap(0, 617, Short.MAX_VALUE)
         );
 
         Tabs.addTab("Cobrar", ChargeTab);
@@ -373,13 +409,28 @@ public class MenuInicial extends javax.swing.JFrame {
         );
         AdministrationTabLayout.setVerticalGroup(
             AdministrationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 590, Short.MAX_VALUE)
+            .addGap(0, 617, Short.MAX_VALUE)
         );
 
         Tabs.addTab("Administrar", AdministrationTab);
 
         InventoryTab.setBackground(new java.awt.Color(255, 255, 255));
         InventoryTab.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblProductos);
+
+        InventoryTab.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 6, 900, 270));
 
         panelFondoFormulario.setBackground(new java.awt.Color(255, 173, 173));
         panelFondoFormulario.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -429,10 +480,6 @@ public class MenuInicial extends javax.swing.JFrame {
         txtCodigoProducto.setBorder(null);
         panelFondoFormulario.add(txtCodigoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, 190, 30));
 
-        txtNombreProducto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtNombreProducto.setBorder(null);
-        panelFondoFormulario.add(txtNombreProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 30, 190, 30));
-
         txtPrecioVenta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtPrecioVenta.setBorder(null);
         panelFondoFormulario.add(txtPrecioVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 40, 70, 30));
@@ -466,7 +513,7 @@ public class MenuInicial extends javax.swing.JFrame {
         jLabel2.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         jPanelbtnAgregar.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, -1, 40));
 
-        panelFondoFormulario.add(jPanelbtnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 190, 90, -1));
+        panelFondoFormulario.add(jPanelbtnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 170, 90, -1));
 
         jPanelbtnEliminar.setBackground(new java.awt.Color(226, 109, 92));
         jPanelbtnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -493,7 +540,7 @@ public class MenuInicial extends javax.swing.JFrame {
         jLabel3.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         jPanelbtnEliminar.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, -1, 40));
 
-        panelFondoFormulario.add(jPanelbtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 190, 90, -1));
+        panelFondoFormulario.add(jPanelbtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 170, 90, -1));
 
         jPanelbtnEditar.setBackground(new java.awt.Color(226, 109, 92));
         jPanelbtnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -520,27 +567,55 @@ public class MenuInicial extends javax.swing.JFrame {
         jLabel4.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         jPanelbtnEditar.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, -1, 40));
 
-        panelFondoFormulario.add(jPanelbtnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 190, 90, -1));
+        panelFondoFormulario.add(jPanelbtnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 170, 90, -1));
 
-        CBMedida.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Seleccionar-", "Pieza", "Litros", "Gramos" }));
+        CBMedida.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Seleccionar-", "Pza", "Lts", "Grs" }));
         panelFondoFormulario.add(CBMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, 190, 30));
 
-        InventoryTab.add(panelFondoFormulario, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 910, 290));
+        txtNombreProducto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtNombreProducto.setBorder(null);
+        panelFondoFormulario.add(txtNombreProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 30, 190, 30));
 
-        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        jPanelbtnLimpiarInventario.setBackground(new java.awt.Color(226, 109, 92));
+        jPanelbtnLimpiarInventario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanelbtnLimpiarInventario.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jPanelbtnLimpiarInventarioMouseMoved(evt);
             }
-        ));
-        jScrollPane1.setViewportView(tblProductos);
+        });
+        jPanelbtnLimpiarInventario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanelbtnLimpiarInventarioMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jPanelbtnLimpiarInventarioMouseExited(evt);
+            }
+        });
+        jPanelbtnLimpiarInventario.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        InventoryTab.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 6, 900, 284));
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Limpiar Inventario");
+        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel5.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanelbtnLimpiarInventario.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, -1, 40));
+
+        panelFondoFormulario.add(jPanelbtnLimpiarInventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 230, 150, -1));
+
+        InventoryTab.add(panelFondoFormulario, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 910, 290));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(88, 73, 54));
+        jLabel1.setText("Búsqueda:");
+        InventoryTab.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, -1, 20));
+
+        txtBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtBusquedaKeyTyped(evt);
+            }
+        });
+        InventoryTab.add(txtBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 290, 190, 30));
 
         Tabs.addTab("Inventario", InventoryTab);
 
@@ -554,12 +629,12 @@ public class MenuInicial extends javax.swing.JFrame {
         );
         SettingsTabLayout.setVerticalGroup(
             SettingsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 590, Short.MAX_VALUE)
+            .addGap(0, 617, Short.MAX_VALUE)
         );
 
         Tabs.addTab("Configuraciones", SettingsTab);
 
-        getContentPane().add(Tabs, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 910, 620));
+        getContentPane().add(Tabs, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 910, 650));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -607,6 +682,7 @@ public class MenuInicial extends javax.swing.JFrame {
     private void LogoutPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogoutPanelMouseClicked
         this.dispose();
         new InterfazGraficaTienda().setVisible(true);
+        actualizarInventario();
     }//GEN-LAST:event_LogoutPanelMouseClicked
 
     private void ChargePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ChargePanelMouseClicked
@@ -628,7 +704,52 @@ public class MenuInicial extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         listaProductos = leerArchivoInventario();
-        mostrar();
+        modelo = new DefaultTableModel() {
+            //Haciendo celdas dentro de la tabla no editables
+            @Override
+            public boolean isCellEditable(int rowIndex, int mColIndex) {
+                return false;
+            }
+        };
+        //Colocando títulos al encabezado de la tabla
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Código");
+        modelo.addColumn("Precio Venta");
+        modelo.addColumn("Precio Compra");
+        modelo.addColumn("Cantidad Disponible");
+        modelo.addColumn("Unidad de Medida");
+        //Estableciendo modelo a la tabla
+        tblProductos.setModel(modelo);
+        JTableHeader Theader = tblProductos.getTableHeader();
+
+        Theader.setDefaultRenderer(new HeaderColor());
+        Theader.setFont(new Font("Segoe UI", Font.BOLD, 80));
+        Theader.setOpaque(false);
+        ((DefaultTableCellRenderer) Theader.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+
+        tblProductos.setRowHeight(25);
+        //Estableciendo tamaños de las columnas
+        tblProductos.getColumnModel().getColumn(0).setMaxWidth(100);
+        tblProductos.getColumnModel().getColumn(0).setPreferredWidth(100);
+        tblProductos.getColumnModel().getColumn(2).setMaxWidth(100);
+        tblProductos.getColumnModel().getColumn(2).setPreferredWidth(100);
+        tblProductos.getColumnModel().getColumn(3).setMaxWidth(100);
+        tblProductos.getColumnModel().getColumn(3).setPreferredWidth(100);
+        tblProductos.getColumnModel().getColumn(4).setMaxWidth(100);
+        tblProductos.getColumnModel().getColumn(4).setPreferredWidth(150);
+
+        //Centrando valores dentro de las columnas
+        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
+        cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        tblProductos.getColumnModel().getColumn(0).setCellRenderer(cellRenderer);
+        tblProductos.getColumnModel().getColumn(1).setCellRenderer(cellRenderer);
+        tblProductos.getColumnModel().getColumn(2).setCellRenderer(cellRenderer);
+        tblProductos.getColumnModel().getColumn(3).setCellRenderer(cellRenderer);
+        tblProductos.getColumnModel().getColumn(4).setCellRenderer(cellRenderer);
+        tblProductos.getColumnModel().getColumn(5).setCellRenderer(cellRenderer);
+        //mostrar();
+
+        cargarTabla();
     }//GEN-LAST:event_formWindowOpened
 
     private void jPanelbtnAgregarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelbtnAgregarMouseMoved
@@ -664,7 +785,11 @@ public class MenuInicial extends javax.swing.JFrame {
             if (filaSelec < 0) {
                 throw new InventarioException("Debes seleccionar un elemento a eliminar");
             }
-            eliminar(filaSelec);
+
+            int confirmacion = JOptionPane.showConfirmDialog(null, "¿Seguro que desea eliminar el elemento " + tblProductos.getValueAt(filaSelec, 0) + "?");
+            if (confirmacion == 0) {
+                eliminar(filaSelec);
+            }
         } catch (InventarioException error) {
             JOptionPane.showMessageDialog(null, error.getMessage());
         }
@@ -690,6 +815,46 @@ public class MenuInicial extends javax.swing.JFrame {
         // TODO add your handling code here:
         jPanelbtnEditar.setBackground(new Color(226, 109, 92));
     }//GEN-LAST:event_jPanelbtnEditarMouseExited
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        actualizarInventario();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void txtBusquedaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaKeyTyped
+        // TODO add your handling code here:
+        txtBusqueda.addKeyListener(new KeyAdapter() {
+
+            public void keyReleased(final KeyEvent e) {
+                String cadena = txtBusqueda.getText();
+                txtBusqueda.setText(cadena);
+                buscar();
+            }
+
+        });
+        trsFiltro = new TableRowSorter(tblProductos.getModel());
+        tblProductos.setRowSorter(trsFiltro);
+    }//GEN-LAST:event_txtBusquedaKeyTyped
+
+    private void jPanelbtnLimpiarInventarioMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelbtnLimpiarInventarioMouseMoved
+        // TODO add your handling code here:
+        jPanelbtnLimpiarInventario.setBackground(new Color(255, 205, 204));
+    }//GEN-LAST:event_jPanelbtnLimpiarInventarioMouseMoved
+
+    private void jPanelbtnLimpiarInventarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelbtnLimpiarInventarioMouseClicked
+        // TODO add your handling code here:
+        int confirmacion = JOptionPane.showConfirmDialog(null, "¿Seguro que quiere borrar el inventario?");
+        if (confirmacion == 0) {
+            listaProductos.clear();
+            modelo.setRowCount(0);
+        }
+
+    }//GEN-LAST:event_jPanelbtnLimpiarInventarioMouseClicked
+
+    private void jPanelbtnLimpiarInventarioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelbtnLimpiarInventarioMouseExited
+        // TODO add your handling code here:
+        jPanelbtnLimpiarInventario.setBackground(new Color(226, 109, 92));
+    }//GEN-LAST:event_jPanelbtnLimpiarInventarioMouseExited
 
     /**
      * @param args the command line arguments
@@ -756,13 +921,16 @@ public class MenuInicial extends javax.swing.JFrame {
     private javax.swing.JLabel UserIcon;
     private javax.swing.JLabel UserLogoLabel;
     private javax.swing.JLabel UsernameLabel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanelbtnAgregar;
     private javax.swing.JPanel jPanelbtnEditar;
     private javax.swing.JPanel jPanelbtnEliminar;
+    private javax.swing.JPanel jPanelbtnLimpiarInventario;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelCantidadDisponible;
     private javax.swing.JLabel labelCodigoProducto;
@@ -772,6 +940,7 @@ public class MenuInicial extends javax.swing.JFrame {
     private javax.swing.JLabel labelUnidadMedida;
     private javax.swing.JPanel panelFondoFormulario;
     private javax.swing.JTable tblProductos;
+    private javax.swing.JTextField txtBusqueda;
     private javax.swing.JTextField txtCantidadDisponible;
     private javax.swing.JTextField txtCodigoProducto;
     private javax.swing.JTextField txtNombreProducto;
@@ -807,14 +976,14 @@ public class MenuInicial extends javax.swing.JFrame {
 
     public void actualizarInventario() {
         try {
-            ObjectOutputStream escribiendo = new ObjectOutputStream(new FileOutputStream("listaProductos..dat"));
+            ObjectOutputStream escribiendo = new ObjectOutputStream(new FileOutputStream("listaProductos.dat"));
 
             System.out.println("Datos guardados correctamente");
             escribiendo.writeObject(listaProductos);
             escribiendo.close();
 
         } catch (IOException e) {
-            System.out.println("Error");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -832,6 +1001,12 @@ public class MenuInicial extends javax.swing.JFrame {
         return listaProductosArchivo;
     }
 
+    public void cargarTabla() {
+        for (int i = 0; i < listaProductos.size(); i++) {
+            agregarTabla(listaProductos.get(i));
+        }
+    }
+
     //Método para limpiar el formulario
     public void limpiar() {
         txtNombreProducto.setText("");
@@ -844,7 +1019,7 @@ public class MenuInicial extends javax.swing.JFrame {
 
     //Método para llenar la tabla con los datos del formulario y el método mostrar
     public void llenarTabla() {
-        String nombre = txtNombreProducto.getText();
+        String nombre = txtNombreProducto.getText().toUpperCase();
         String codigoProducto = txtCodigoProducto.getText();
         double precioVenta = Double.parseDouble(txtPrecioVenta.getText());
         double precioCompra = Double.parseDouble(txtPrecioCompra.getText());
@@ -861,23 +1036,29 @@ public class MenuInicial extends javax.swing.JFrame {
             if (!codigoProducto.matches("[0-9]{10}")) {
                 throw new InventarioException("El codigo solo admite números de 10 caracteres");
             }
-            
-            
+
             //Aqui hago que si hay algun producto repetido solo le sume la cantidad de elementos de ese producto
             boolean repetida = false;
-            for (int i = 0; i < listaProductos.size(); i++) {
-                if (codigoProducto.equals(listaProductos.get(i).getCodigoProducto())) {
-                    listaProductos.get(i).setCantidadDisponible(listaProductos.get(i).getCantidadDisponible() + cantidadDisponible);
-                    repetida = true;
+            for (int i = 0; i < tblProductos.getRowCount(); i++) {
+                if (codigoProducto.equals(tblProductos.getValueAt(i, 1))) {
+                    if (nombre.equals(tblProductos.getValueAt(i, 0))) {
+                        listaProductos.get(i).setCantidadDisponible(listaProductos.get(i).getCantidadDisponible() + cantidadDisponible);
+                        tblProductos.setValueAt((int) tblProductos.getValueAt(i, 4) + cantidadDisponible, i, 4);
+                        repetida = true;
+                    }
+                    else{
+                        throw new InventarioException("El código ingresado pertenece a otro producto");
+                    }
                 }
             }
 
             if (repetida == false) {
-                listaProductos.add(new Producto(nombre, codigoProducto, precioVenta, precioCompra, cantidadDisponible, unidadMedida));
-            }
+                Producto nuevoProducto = new Producto(nombre, codigoProducto, precioVenta, precioCompra, cantidadDisponible, unidadMedida);
+                listaProductos.add(nuevoProducto);
+                agregarTabla(nuevoProducto);
 
-            mostrar();
-            actualizarInventario();
+            }
+            //actualizarInventario();
             limpiar();
 
         } catch (InventarioException err) {
@@ -886,53 +1067,58 @@ public class MenuInicial extends javax.swing.JFrame {
     }
 
     //Este método es para cargar el modelo de la tabla
-    public void mostrar() {
+    public void agregarTabla(Producto nuevoProducto) {
         Object[][] matriz = new Object[listaProductos.size()][6];
-        
+        Object[] vector = {nuevoProducto.getNombreProducto(), nuevoProducto.getCodigoProducto(), nuevoProducto.getPrecioVenta(), nuevoProducto.getPrecioCompra(),
+            nuevoProducto.getCantidadDisponible(), nuevoProducto.getUnidadMedida()};
+
+        modelo.addRow(vector);
+
         //Creo una matriz de tipo objecto con todos los datos del producto
-        for (int i = 0; i < listaProductos.size(); i++) {
-            matriz[i][0] = listaProductos.get(i).getNombreProducto();
-            matriz[i][1] = listaProductos.get(i).getCodigoProducto();
-            matriz[i][2] = listaProductos.get(i).getPrecioVenta();
-            matriz[i][3] = listaProductos.get(i).getPrecioCompra();
-            matriz[i][4] = listaProductos.get(i).getCantidadDisponible();
-            matriz[i][5] = listaProductos.get(i).getUnidadMedida();
-        }
-        
-        //Cargo el modelo de la tabla con la matriz y el string de columnas
-        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
-                matriz,
-                new String[]{
-                    "Nombre", "Código", "Precio Venta", "Precio Compra", "Cantidad Disponible", "Unidad de Medida"
-                }
-        ));
+//        for (int i = 0; i < listaProductos.size(); i++) {
+//            matriz[i][0] = listaProductos.get(i).getNombreProducto();
+//            matriz[i][1] = listaProductos.get(i).getCodigoProducto();
+//            matriz[i][2] = listaProductos.get(i).getPrecioVenta();
+//            matriz[i][3] = listaProductos.get(i).getPrecioCompra();
+//            matriz[i][4] = listaProductos.get(i).getCantidadDisponible();
+//            matriz[i][5] = listaProductos.get(i).getUnidadMedida();
+//        }
+//        
+//        //Cargo el modelo de la tabla con la matriz y el string de columnas
+//        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
+//                matriz,
+//                new String[]{
+//                    "Nombre", "Código", "Precio Venta", "Precio Compra", "Cantidad Disponible", "Unidad de Medida"
+//                }
+//        ));
     }
 
     //Metodo para eliminar un elemento de la tabla y del inventario
     public void eliminar(int filaSelec) {
-        
+
         //Ubico el elemento a eliminar
         String nombre = tblProductos.getValueAt(filaSelec, 0).toString();
         for (int i = 0; i < listaProductos.size(); i++) {
-            if (nombre == listaProductos.get(i).getNombreProducto()) {
+            if (nombre.equals(listaProductos.get(i).getNombreProducto())) {
                 listaProductos.remove(i);
+                modelo.removeRow(i);
             }
         }
-        
+
         //Reseteo el archivo binario para eliminar el elemento
-        try {
-            ObjectOutputStream escribiendo = new ObjectOutputStream(new FileOutputStream("listaProductos.dat"));
-
-            System.out.println("Datos elimnados correctamente");
-            escribiendo.reset();
-            escribiendo.close();
-
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+//        try {
+//            ObjectOutputStream escribiendo = new ObjectOutputStream(new FileOutputStream("listaProductos.dat"));
+//
+//            System.out.println("Datos elimnados correctamente");
+//            escribiendo.reset();
+//            escribiendo.close();
+//
+//        } catch (IOException e) {
+//            System.out.println(e.getMessage());
+//        }
         //Escribo nuevamente el array en el archivo binario
-        actualizarInventario();
-        mostrar();
+        //actualizarInventario();
+        //mostrar();
     }
 
     //Método para editar elemento de la tabla
@@ -951,12 +1137,19 @@ public class MenuInicial extends javax.swing.JFrame {
             CBMedida.setSelectedItem(tblProductos.getValueAt(filaSelec, 5));
 
             //Elimino el elemento que se seleccionó para no tener 2 veces el mismo
+            modelo.removeRow(filaSelec);
             listaProductos.remove(filaSelec);
-            actualizarInventario();
-            mostrar();
+            //actualizarInventario();
+            //mostrar();
         } else {
             JOptionPane.showMessageDialog(null, "Selecciona un elemento para editar");
         }
+
+    }
+
+    public void buscar() {
+        int columna = 0;//Es el nombre en el jtable
+        trsFiltro.setRowFilter(RowFilter.regexFilter("(?i)" + txtBusqueda.getText(), columna));
 
     }
 
@@ -971,5 +1164,6 @@ public class MenuInicial extends javax.swing.JFrame {
         jPanelbtnAgregar.setVisible(false);
         jPanelbtnEliminar.setVisible(false);
         jPanelbtnEditar.setVisible(false);
+        jPanelbtnLimpiarInventario.setVisible(false);
     }
 }
